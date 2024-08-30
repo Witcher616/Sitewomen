@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Авторизация</h1>
+
+{% if not user.is_authenticated %}
+<form method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{next}}">
+    <div class="form-error">{{ form.non_field_errors }}</div>
+    {% for f in form %}
+    <p><label class="form-label" for="{{ f.id_for_label }}">{{ f.label }}</label>{{ f }}</p>
+    <div class="form-error">{{ f.errors }}</div>
+    {% endfor %}
+    <p><button type="submit">Отправить</button></p>
+    <p><a href="{% url 'users:password_reset' %}">Забыли пароль?</a></p>
+    <hr>
+    <p><a href="{% url 'social:begin' 'github' %}"><img width="70" src="/media/users/social-media/github.svg"></a></p>
+</form>
+{% else %}
+<h2>Вы уже авторизованы!</h2>
+{% endif %}
+{% endblock %}
